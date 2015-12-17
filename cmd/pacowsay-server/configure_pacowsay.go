@@ -5,9 +5,8 @@ import (
 
 	"github.com/go-swagger/go-swagger/errors"
 	"github.com/go-swagger/go-swagger/httpkit"
-	"github.com/go-swagger/go-swagger/httpkit/middleware"
-
-	"github.com/nmonterroso/pacowsay/generated/restapi/operations"
+	"github.com/nmonterroso/pacowsay/restapi/operations"
+	"github.com/nmonterroso/pacowsay/restapi/responders"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten
@@ -20,9 +19,11 @@ func configureAPI(api *operations.PacowsayAPI) http.Handler {
 
 	api.JSONProducer = httpkit.JSONProducer()
 
-	api.CowsayHandler = operations.CowsayHandlerFunc(func(params operations.CowsayParams) middleware.Responder {
-		return middleware.NotImplemented("operation cowssay has not yet been implemented")
-	})
+//	api.CowsayHandler = operations.CowsayHandlerFunc(func(params operations.CowsayParams) middleware.Responder {
+//		return middleware.NotImplemented("operation cowsay has not yet been implemented")
+//	})
+
+	api.CowsayHandler = operations.CowsayHandlerFunc(responders.CowsayResponder)
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }
