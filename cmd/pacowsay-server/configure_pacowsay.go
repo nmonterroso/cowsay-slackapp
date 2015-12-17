@@ -19,10 +19,6 @@ func configureAPI(api *operations.PacowsayAPI) http.Handler {
 
 	api.JSONProducer = httpkit.JSONProducer()
 
-//	api.CowsayHandler = operations.CowsayHandlerFunc(func(params operations.CowsayParams) middleware.Responder {
-//		return middleware.NotImplemented("operation cowsay has not yet been implemented")
-//	})
-
 	api.CowsayHandler = operations.CowsayHandlerFunc(responders.CowsayResponder)
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
