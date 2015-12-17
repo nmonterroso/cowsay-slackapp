@@ -122,7 +122,8 @@
                 "response_type": {
                     "type": "string",
                     "enum": [
-                        "in_channel"
+                        "in_channel",
+                        "ephemeral"
                     ]
                 },
                 "text": {

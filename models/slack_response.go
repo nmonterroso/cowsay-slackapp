@@ -55,7 +55,7 @@ var slackResponseResponseTypeEnum []interface{}
 func (m *SLACKResponse) validateResponseTypeEnum(path, location string, value string) error {
 	if slackResponseResponseTypeEnum == nil {
 		var res []string
-		if err := json.Unmarshal([]byte(`["in_channel"]`), &res); err != nil {
+		if err := json.Unmarshal([]byte(`["in_channel","ephemeral"]`), &res); err != nil {
 			return err
 		}
 		for _, v := range res {
