@@ -14,9 +14,9 @@ import (
 	"github.com/go-swagger/go-swagger/strfmt"
 )
 
-// NewPacowsayAPI creates a new Pacowsay instance
-func NewPacowsayAPI(spec *spec.Document) *PacowsayAPI {
-	o := &PacowsayAPI{
+// NewCowsaySlackappAPI creates a new CowsaySlackapp instance
+func NewCowsaySlackappAPI(spec *spec.Document) *CowsaySlackappAPI {
+	o := &CowsaySlackappAPI{
 		spec:            spec,
 		handlers:        make(map[string]http.Handler),
 		formats:         strfmt.Default,
@@ -27,8 +27,8 @@ func NewPacowsayAPI(spec *spec.Document) *PacowsayAPI {
 	return o
 }
 
-/*PacowsayAPI functionality for a pacowsay server */
-type PacowsayAPI struct {
+/*CowsaySlackappAPI functionality for a cowsay-slackapp server */
+type CowsaySlackappAPI struct {
 	spec            *spec.Document
 	context         *middleware.Context
 	handlers        map[string]http.Handler
@@ -50,37 +50,37 @@ type PacowsayAPI struct {
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *PacowsayAPI) SetDefaultProduces(mediaType string) {
+func (o *CowsaySlackappAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *PacowsayAPI) SetDefaultConsumes(mediaType string) {
+func (o *CowsaySlackappAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // DefaultProduces returns the default produces media type
-func (o *PacowsayAPI) DefaultProduces() string {
+func (o *CowsaySlackappAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *PacowsayAPI) DefaultConsumes() string {
+func (o *CowsaySlackappAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *PacowsayAPI) Formats() strfmt.Registry {
+func (o *CowsaySlackappAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *PacowsayAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *CowsaySlackappAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the PacowsayAPI
-func (o *PacowsayAPI) Validate() error {
+// Validate validates the registrations in the CowsaySlackappAPI
+func (o *CowsaySlackappAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -103,19 +103,19 @@ func (o *PacowsayAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *PacowsayAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *CowsaySlackappAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *PacowsayAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]httpkit.Authenticator {
+func (o *CowsaySlackappAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]httpkit.Authenticator {
 
 	return nil
 
 }
 
 // ConsumersFor gets the consumers for the specified media types
-func (o *PacowsayAPI) ConsumersFor(mediaTypes []string) map[string]httpkit.Consumer {
+func (o *CowsaySlackappAPI) ConsumersFor(mediaTypes []string) map[string]httpkit.Consumer {
 
 	result := make(map[string]httpkit.Consumer)
 	for _, mt := range mediaTypes {
@@ -131,7 +131,7 @@ func (o *PacowsayAPI) ConsumersFor(mediaTypes []string) map[string]httpkit.Consu
 }
 
 // ProducersFor gets the producers for the specified media types
-func (o *PacowsayAPI) ProducersFor(mediaTypes []string) map[string]httpkit.Producer {
+func (o *CowsaySlackappAPI) ProducersFor(mediaTypes []string) map[string]httpkit.Producer {
 
 	result := make(map[string]httpkit.Producer)
 	for _, mt := range mediaTypes {
@@ -147,7 +147,7 @@ func (o *PacowsayAPI) ProducersFor(mediaTypes []string) map[string]httpkit.Produ
 }
 
 // HandlerFor gets a http.Handler for the provided operation id
-func (o *PacowsayAPI) HandlerFor(operationID string) (http.Handler, bool) {
+func (o *CowsaySlackappAPI) HandlerFor(operationID string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -155,7 +155,7 @@ func (o *PacowsayAPI) HandlerFor(operationID string) (http.Handler, bool) {
 	return h, ok
 }
 
-func (o *PacowsayAPI) initHandlerCache() {
+func (o *CowsaySlackappAPI) initHandlerCache() {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -168,7 +168,7 @@ func (o *PacowsayAPI) initHandlerCache() {
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *PacowsayAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *CowsaySlackappAPI) Serve(builder middleware.Builder) http.Handler {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}

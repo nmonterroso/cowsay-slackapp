@@ -1,11 +1,11 @@
-/*Package main pacowsay API
+/*Package main Cowsay-SlackApp API
 
-functionality for a pacowsay server
+functionality for a cowsay-slackapp server
 
 
     Schemes:
       http
-    Host: api.pacowsay.com
+    Host: api.cowsay.com
     BasePath: /
     Version: 1.0.0
 

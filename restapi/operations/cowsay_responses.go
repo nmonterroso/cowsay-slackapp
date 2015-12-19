@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-swagger/go-swagger/httpkit"
 
-	"github.com/nmonterroso/pacowsay/models"
+	"github.com/nmonterroso/cowsay-slackapp/models"
 )
 
 /*CowsayOK message formatted for Slack consumption

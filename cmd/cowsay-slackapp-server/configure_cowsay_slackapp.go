@@ -5,13 +5,13 @@ import (
 
 	"github.com/go-swagger/go-swagger/errors"
 	"github.com/go-swagger/go-swagger/httpkit"
-	"github.com/nmonterroso/pacowsay/restapi/operations"
-	"github.com/nmonterroso/pacowsay/restapi/responders"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/responders"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten
 
-func configureAPI(api *operations.PacowsayAPI) http.Handler {
+func configureAPI(api *operations.CowsaySlackappAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 

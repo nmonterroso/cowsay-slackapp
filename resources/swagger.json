@@ -1,11 +1,11 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "pacowsay API",
-        "description": "functionality for a pacowsay server",
+        "title": "Cowsay-SlackApp API",
+        "description": "functionality for a cowsay-slackapp server",
         "version": "1.0.0"
     },
-    "host": "api.pacowsay.com",
+    "host": "api.cowsay.com",
     "schemes": [
         "http"
     ],
@@ -14,11 +14,11 @@
         "application/json"
     ],
     "paths": {
-        "/cowsay": {
+        "/": {
             "get": {
                 "operationId": "cowsay",
                 "summary": "Respond to a Slack cowsay command",
-                "description": "Respond to a Slack `/cowsay` command and send the requested message to the channel in which\nthe command was posted\n",
+                "description": "Respond to a Slack `/` command and send the requested message to the channel in which\nthe command was posted\n",
                 "produces": [
                     "application/json"
                 ],

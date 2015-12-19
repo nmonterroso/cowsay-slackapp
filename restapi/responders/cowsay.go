@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/go-swagger/go-swagger/httpkit/middleware"
 	"github.com/nmonterroso/cowsay"
-	"github.com/nmonterroso/pacowsay/models"
-	"github.com/nmonterroso/pacowsay/restapi/operations"
-	"github.com/nmonterroso/pacowsay/slack"
+	"github.com/nmonterroso/cowsay-slackapp/models"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
+	"github.com/nmonterroso/cowsay-slackapp/slack"
 	"net/http"
 )
 
