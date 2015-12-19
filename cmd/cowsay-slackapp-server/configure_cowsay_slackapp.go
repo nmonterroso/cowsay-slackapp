@@ -7,11 +7,15 @@ import (
 	"github.com/go-swagger/go-swagger/httpkit"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/responders"
+	"math/rand"
+	"time"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten
 
 func configureAPI(api *operations.CowsaySlackappAPI) http.Handler {
+	rand.Seed(time.Now().UTC().UnixNano())
+
 	// configure the api here
 	api.ServeError = errors.ServeError
 

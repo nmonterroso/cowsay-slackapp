@@ -13,6 +13,10 @@ import (
 func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 	cow, err := cowsay.ParseArgs(params.Text)
 
+	if cow.IsHelper {
+		cow.Options.Random = true
+	}
+
 	if err != nil {
 		return &operations.CowsayDefault{
 			&models.Error{
