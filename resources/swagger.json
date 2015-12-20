@@ -1,153 +1,154 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Cowsay-SlackApp API",
-        "description": "functionality for a cowsay-slackapp server",
-        "version": "1.0.0"
-    },
-    "host": "api.cowsay.com",
-    "schemes": [
-        "http"
-    ],
-    "basePath": "/",
-    "produces": [
-        "application/json"
-    ],
-    "paths": {
-        "/": {
-            "get": {
-                "operationId": "cowsay",
-                "summary": "Respond to a Slack cowsay command",
-                "description": "Respond to a Slack `/` command and send the requested message to the channel in which\nthe command was posted\n",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "query",
-                        "description": "Team command token",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "team_id",
-                        "in": "query",
-                        "description": "Team ID the request originated from",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "team_domain",
-                        "in": "query",
-                        "description": "domain for the team `team_id`",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "channel_id",
-                        "in": "query",
-                        "description": "the channel id the request originated from",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "channel_name",
-                        "in": "query",
-                        "description": "the name of the corresponding `channel_id`",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "description": "id of the user who sent the command",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "user_name",
-                        "in": "query",
-                        "description": "name of the corresponding `user_id`",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "command",
-                        "in": "query",
-                        "description": "the command sent by the user",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "text",
-                        "in": "query",
-                        "description": "the arguments to the command",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "response_url",
-                        "in": "query",
-                        "description": "the response url of the Slack command",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "message formatted for Slack consumption",
-                        "schema": {
-                            "$ref": "#/definitions/SlackResponse"
-                        }
-                    },
-                    "default": {
-                        "description": "Unexpected error",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
+  "swagger": "2.0",
+  "info": {
+    "title": "Cowsay-SlackApp API",
+    "description": "functionality for a cowsay-slackapp server",
+    "version": "1.0.0"
+  },
+  "host": "api.cowsayslackapp.com",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "basePath": "/",
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "cowsay",
+        "summary": "Respond to a Slack cowsay command",
+        "description": "Respond to a Slack `/` command and send the requested message to the channel in which\nthe command was posted\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Team command token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "team_id",
+            "in": "query",
+            "description": "Team ID the request originated from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "team_domain",
+            "in": "query",
+            "description": "domain for the team `team_id`",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "channel_id",
+            "in": "query",
+            "description": "the channel id the request originated from",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "channel_name",
+            "in": "query",
+            "description": "the name of the corresponding `channel_id`",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "id of the user who sent the command",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user_name",
+            "in": "query",
+            "description": "name of the corresponding `user_id`",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "command",
+            "in": "query",
+            "description": "the command sent by the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "the arguments to the command",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "response_url",
+            "in": "query",
+            "description": "the response url of the Slack command",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "message formatted for Slack consumption",
+            "schema": {
+              "$ref": "#/definitions/SlackResponse"
             }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
         }
-    },
-    "definitions": {
-        "SlackResponse": {
-            "type": "object",
-            "required": [
-                "response_type",
-                "text"
-            ],
-            "properties": {
-                "response_type": {
-                    "type": "string",
-                    "enum": [
-                        "in_channel",
-                        "ephemeral"
-                    ]
-                },
-                "text": {
-                    "type": "string"
-                }
-            }
-        },
-        "Error": {
-            "type": "object",
-            "required": [
-                "code",
-                "message"
-            ],
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "the HTTP status of the response"
-                },
-                "message": {
-                    "type": "string",
-                    "description": "details about why the request failed"
-                }
-            }
-        }
+      }
     }
+  },
+  "definitions": {
+    "SlackResponse": {
+      "type": "object",
+      "required": [
+        "response_type",
+        "text"
+      ],
+      "properties": {
+        "response_type": {
+          "type": "string",
+          "enum": [
+            "in_channel",
+            "ephemeral"
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "the HTTP status of the response"
+        },
+        "message": {
+          "type": "string",
+          "description": "details about why the request failed"
+        }
+      }
+    }
+  }
 }

@@ -5,7 +5,8 @@ functionality for a cowsay-slackapp server
 
     Schemes:
       http
-    Host: api.cowsay.com
+      https
+    Host: api.cowsayslackapp.com
     BasePath: /
     Version: 1.0.0
 

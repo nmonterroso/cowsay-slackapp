@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
 	"log"
 	"net"
@@ -23,6 +24,11 @@ import (
 var opts struct {
 	Host string `long:"host" description:"the IP to listen on" default:"localhost" env:"HOST"`
 	Port int    `long:"port" description:"the port to listen on for insecure connections, defaults to a random value" env:"PORT"`
+
+	TLSHost           string         `long:"tls-host" description:"the IP to listen on for tls, when not specified it's the same as --host" env:"TLS_HOST"`
+	TLSPort           int            `long:"tls-port" description:"the port to listen on for secure connections, defaults to a random value" env:"TLS_PORT"`
+	TLSCertificate    flags.Filename `long:"tls-certificate" description:"the certificate to use for secure connections" required:"true" env:"TLS_CERTIFICATE"`
+	TLSCertificateKey flags.Filename `long:"tls-key" description:"the private key to use for secure conections" required:"true" env:"TLS_PRIVATE_KEY"`
 }
 
 func main() {
@@ -51,10 +57,38 @@ func main() {
 	}
 
 	fmt.Printf("serving cowsay slackapp at http://%s\n", listener.Addr())
-	if err := httpServer.Serve(tcpKeepAliveListener{listener.(*net.TCPListener)}); err != nil {
+	go func() {
+		if err := httpServer.Serve(tcpKeepAliveListener{listener.(*net.TCPListener)}); err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
+	httpsServer := &graceful.Server{Server: new(http.Server)}
+	httpsServer.Handler = handler
+	httpsServer.TLSConfig = new(tls.Config)
+	httpsServer.TLSConfig.NextProtos = []string{"http/1.1"}
+	// https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet#Rule_-_Only_Support_Strong_Protocols
+	httpsServer.TLSConfig.MinVersion = tls.VersionTLS11
+	httpsServer.TLSConfig.Certificates = make([]tls.Certificate, 1)
+	httpsServer.TLSConfig.Certificates[0], err = tls.LoadX509KeyPair(string(opts.TLSCertificate), string(opts.TLSCertificateKey))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if opts.TLSHost == "" {
+		opts.TLSHost = opts.Host
+	}
+	tlsListener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", opts.TLSHost, opts.TLSPort))
+	if err != nil {
 		log.Fatalln(err)
 	}
 
+	fmt.Printf("serving cowsay slackapp at https://%s\n", tlsListener.Addr())
+
+	wrapped := tls.NewListener(tcpKeepAliveListener{tlsListener.(*net.TCPListener)}, httpsServer.TLSConfig)
+	if err := httpsServer.Serve(wrapped); err != nil {
+		log.Fatalln(err)
+	}
 }
 
 // tcpKeepAliveListener is copied from the stdlib net/http package
