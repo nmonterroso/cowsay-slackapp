@@ -43,6 +43,8 @@ type CowsaySlackappAPI struct {
 
 	// CowsayHandler sets the operation handler for the cowsay operation
 	CowsayHandler CowsayHandler
+	// OauthRedirectHandler sets the operation handler for the oauth redirect operation
+	OauthRedirectHandler OauthRedirectHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -93,6 +95,10 @@ func (o *CowsaySlackappAPI) Validate() error {
 
 	if o.CowsayHandler == nil {
 		unregistered = append(unregistered, "CowsayHandler")
+	}
+
+	if o.OauthRedirectHandler == nil {
+		unregistered = append(unregistered, "OauthRedirectHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -163,6 +169,8 @@ func (o *CowsaySlackappAPI) initHandlerCache() {
 	o.handlers = make(map[string]http.Handler)
 
 	o.handlers["cowsay"] = NewCowsay(o.context, o.CowsayHandler)
+
+	o.handlers["oauthRedirect"] = NewOauthRedirect(o.context, o.OauthRedirectHandler)
 
 }
 

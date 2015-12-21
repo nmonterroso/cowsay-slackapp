@@ -110,6 +110,39 @@
           }
         }
       }
+    },
+    "/oauth-redirect": {
+      "get": {
+        "operationId": "oauthRedirect",
+        "description": "Respond to an oauth request acceptance/denial of app permissions",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "description": "temporary code that can be exchanged for an access_token if the user accepted the oauth request",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "description": "error indicating that the user denied the access_token request",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "proper processing of an oauth accept/deny"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
