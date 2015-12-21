@@ -25,6 +25,8 @@ func configureAPI(api *operations.CowsaySlackappAPI) http.Handler {
 
 	api.CowsayHandler = operations.CowsayHandlerFunc(responders.CowsayResponder)
 
+	api.OauthRedirectHandler = operations.OauthRedirectHandlerFunc(responders.OauthRedirectResponder)
+
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }
 
