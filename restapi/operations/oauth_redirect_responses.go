@@ -11,22 +11,30 @@ import (
 	"github.com/nmonterroso/cowsay-slackapp/models"
 )
 
-/*OauthRedirectNoContent proper processing of an oauth accept/deny
+/*OauthRedirectOK proper processing of an oauth accept/deny
 
-swagger:response oauthRedirectNoContent
+swagger:response oauthRedirectOK
 */
-type OauthRedirectNoContent struct {
+type OauthRedirectOK struct {
+
+	// In: body
+	Payload *models.OauthComplete `json:"body,omitempty"`
 }
 
-// Create OauthRedirectNoContent with default headers values
-func NewOauthRedirectNoContent() OauthRedirectNoContent {
-	return OauthRedirectNoContent{}
+// Create OauthRedirectOK with default headers values
+func NewOauthRedirectOK() OauthRedirectOK {
+	return OauthRedirectOK{}
 }
 
 // WriteResponse to the client
-func (o *OauthRedirectNoContent) WriteResponse(rw http.ResponseWriter, producer httpkit.Producer) {
+func (o *OauthRedirectOK) WriteResponse(rw http.ResponseWriter, producer httpkit.Producer) {
 
-	rw.WriteHeader(204)
+	rw.WriteHeader(200)
+	if o.Payload != nil {
+		if err := producer.Produce(rw, o.Payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 /*OauthRedirectDefault Unexpected error

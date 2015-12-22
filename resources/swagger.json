@@ -131,8 +131,11 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "proper processing of an oauth accept/deny"
+          "200": {
+            "description": "proper processing of an oauth accept/deny",
+            "schema": {
+              "$ref": "#/definitions/OauthComplete"
+            }
           },
           "default": {
             "description": "Unexpected error",
@@ -161,6 +164,17 @@
         },
         "text": {
           "type": "string"
+        }
+      }
+    },
+    "OauthComplete": {
+      "type": "object",
+      "required": [
+        "authorized"
+      ],
+      "properties": {
+        "authorized": {
+          "type": "boolean"
         }
       }
     },

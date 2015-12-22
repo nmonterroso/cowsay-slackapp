@@ -20,10 +20,8 @@ const (
 
 var (
 	missingClientCredentials = errors.New("missing_oauth_client_credentials")
-	missingRedirectUri       = errors.New("missing_redirect_uri")
 	missingCode              = errors.New("missing_oauth_code")
 	clientId, clientSecret   = slackClientCredentials()
-	redirectUri              = slackRedirectUri()
 )
 
 type SlackAccessTokenResponse struct {
@@ -35,7 +33,9 @@ type SlackAccessTokenResponse struct {
 
 func OauthRedirectResponder(params operations.OauthRedirectParams) middleware.Responder {
 	if params.Error != "" {
-		return &operations.OauthRedirectNoContent{}
+		return &operations.OauthRedirectOK{
+			&models.OauthComplete{false},
+		}
 	} else if params.Code == "" {
 		return &operations.OauthRedirectDefault{
 			&models.Error{
@@ -51,12 +51,14 @@ func OauthRedirectResponder(params operations.OauthRedirectParams) middleware.Re
 		return &operations.OauthRedirectDefault{
 			&models.Error{
 				Code:    http.StatusInternalServerError,
-				Message: missingCode.Error(),
+				Message: err.Error(),
 			},
 		}
 	}
 
-	return &operations.OauthRedirectNoContent{}
+	return &operations.OauthRedirectOK{
+		&models.OauthComplete{true},
+	}
 }
 
 func slackClientCredentials() (string, string) {
@@ -70,18 +72,8 @@ func slackClientCredentials() (string, string) {
 	return id, secret
 }
 
-func slackRedirectUri() string {
-	uri := os.Getenv(redirectUriEnv)
-
-	if uri == "" {
-		panic(missingRedirectUri)
-	}
-
-	return uri
-}
-
 func slackAccessToken(code string) (*SlackAccessTokenResponse, error) {
-	resp, body, errs := gorequest.New().Get(slackOauthAccessEndpoint(code)).EndBytes()
+	resp, body, errs := gorequest.New().Get(slackOauthAccessEndpoint(code)).End()
 
 	if len(errs) > 0 {
 		return nil, errs[0]
@@ -92,24 +84,23 @@ func slackAccessToken(code string) (*SlackAccessTokenResponse, error) {
 	}
 
 	var response SlackAccessTokenResponse
-	err := json.Unmarshal(body, &response)
+	err := json.Unmarshal([]byte(body), &response)
 
 	if err != nil {
 		return nil, err
 	}
 
 	if !response.Ok || response.Error != "" {
-		return nil, response.Error
+		return nil, errors.New(response.Error)
 	}
 
-	return response, nil
+	return &response, nil
 }
 
 func slackOauthAccessEndpoint(code string) string {
 	return fmt.Sprintf(
-		"https://slack.com/api/oauth.access?client_id=%s&client_secret=%s&code=%s&redirect_uri=%s",
+		"https://slack.com/api/oauth.access?client_id=%s&client_secret=%s&code=%s",
 		clientId,
 		clientSecret,
-		code,
-		redirectUri)
+		code)
 }
