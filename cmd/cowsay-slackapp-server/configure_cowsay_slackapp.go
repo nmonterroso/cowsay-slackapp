@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-swagger/go-swagger/errors"
 	"github.com/go-swagger/go-swagger/httpkit"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/middleware"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/responders"
 	"math/rand"
@@ -33,7 +34,7 @@ func configureAPI(api *operations.CowsaySlackappAPI) http.Handler {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation
 func setupMiddlewares(handler http.Handler) http.Handler {
-	return handler
+	return &middleware.FormContentTypeConversionMiddleware{handler}
 }
 
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
