@@ -7,8 +7,7 @@
   },
   "host": "api.cowsayslackapp.com",
   "schemes": [
-    "http",
-    "https"
+    "http"
   ],
   "basePath": "/",
   "produces": [
