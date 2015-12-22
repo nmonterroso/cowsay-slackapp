@@ -15,80 +15,83 @@
   ],
   "paths": {
     "/": {
-      "get": {
+      "post": {
         "operationId": "cowsay",
         "summary": "Respond to a Slack cowsay command",
-        "description": "Respond to a Slack `/` command and send the requested message to the channel in which\nthe command was posted\n",
+        "description": "Respond to a Slack cowsay (`/cowsay`) command and send the requested message to the channel in which the command was posted",
         "produces": [
           "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
         ],
         "parameters": [
           {
             "name": "token",
-            "in": "query",
+            "in": "formData",
             "description": "Team command token",
             "required": true,
             "type": "string"
           },
           {
             "name": "team_id",
-            "in": "query",
+            "in": "formData",
             "description": "Team ID the request originated from",
             "required": true,
             "type": "string"
           },
           {
             "name": "team_domain",
-            "in": "query",
+            "in": "formData",
             "description": "domain for the team `team_id`",
             "required": true,
             "type": "string"
           },
           {
             "name": "channel_id",
-            "in": "query",
+            "in": "formData",
             "description": "the channel id the request originated from",
             "required": true,
             "type": "string"
           },
           {
             "name": "channel_name",
-            "in": "query",
+            "in": "formData",
             "description": "the name of the corresponding `channel_id`",
             "required": true,
             "type": "string"
           },
           {
             "name": "user_id",
-            "in": "query",
+            "in": "formData",
             "description": "id of the user who sent the command",
             "required": true,
             "type": "string"
           },
           {
             "name": "user_name",
-            "in": "query",
+            "in": "formData",
             "description": "name of the corresponding `user_id`",
             "required": true,
             "type": "string"
           },
           {
             "name": "command",
-            "in": "query",
+            "in": "formData",
             "description": "the command sent by the user",
             "required": true,
             "type": "string"
           },
           {
             "name": "text",
-            "in": "query",
+            "in": "formData",
             "description": "the arguments to the command",
             "required": true,
             "type": "string"
           },
           {
             "name": "response_url",
-            "in": "query",
+            "in": "formData",
             "description": "the response url of the Slack command",
             "required": true,
             "type": "string"

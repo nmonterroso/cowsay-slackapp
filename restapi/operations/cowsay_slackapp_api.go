@@ -20,7 +20,7 @@ func NewCowsaySlackappAPI(spec *spec.Document) *CowsaySlackappAPI {
 		spec:            spec,
 		handlers:        make(map[string]http.Handler),
 		formats:         strfmt.Default,
-		defaultConsumes: "application/json",
+		defaultConsumes: "application/x-www-form-urlencoded",
 		defaultProduces: "application/json",
 	}
 

@@ -20,52 +20,52 @@ import (
 type CowsayParams struct {
 	/*the channel id the request originated from
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	ChannelID string
 	/*the name of the corresponding `channel_id`
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	ChannelName string
 	/*the command sent by the user
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	Command string
 	/*the response url of the Slack command
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	ResponseURL string
 	/*domain for the team `team_id`
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	TeamDomain string
 	/*Team ID the request originated from
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	TeamID string
 	/*the arguments to the command
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	Text string
 	/*Team command token
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	Token string
 	/*id of the user who sent the command
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	UserID string
 	/*name of the corresponding `user_id`
 	  Required: true
-	  In: query
+	  In: formData
 	*/
 	UserName string
 }
@@ -74,55 +74,58 @@ type CowsayParams struct {
 // for simple values it will use straight method calls
 func (o *CowsayParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
-	qs := httpkit.Values(r.URL.Query())
+	if err := r.ParseMultipartForm(32 << 20); err != nil {
+		return err
+	}
+	fds := httpkit.Values(r.Form)
 
-	qChannelID, qhkChannelID, _ := qs.GetOK("channel_id")
-	if err := o.bindChannelID(qChannelID, qhkChannelID, route.Formats); err != nil {
+	fdChannelID, fdhkChannelID, _ := fds.GetOK("channel_id")
+	if err := o.bindChannelID(fdChannelID, fdhkChannelID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qChannelName, qhkChannelName, _ := qs.GetOK("channel_name")
-	if err := o.bindChannelName(qChannelName, qhkChannelName, route.Formats); err != nil {
+	fdChannelName, fdhkChannelName, _ := fds.GetOK("channel_name")
+	if err := o.bindChannelName(fdChannelName, fdhkChannelName, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qCommand, qhkCommand, _ := qs.GetOK("command")
-	if err := o.bindCommand(qCommand, qhkCommand, route.Formats); err != nil {
+	fdCommand, fdhkCommand, _ := fds.GetOK("command")
+	if err := o.bindCommand(fdCommand, fdhkCommand, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qResponseURL, qhkResponseURL, _ := qs.GetOK("response_url")
-	if err := o.bindResponseURL(qResponseURL, qhkResponseURL, route.Formats); err != nil {
+	fdResponseURL, fdhkResponseURL, _ := fds.GetOK("response_url")
+	if err := o.bindResponseURL(fdResponseURL, fdhkResponseURL, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qTeamDomain, qhkTeamDomain, _ := qs.GetOK("team_domain")
-	if err := o.bindTeamDomain(qTeamDomain, qhkTeamDomain, route.Formats); err != nil {
+	fdTeamDomain, fdhkTeamDomain, _ := fds.GetOK("team_domain")
+	if err := o.bindTeamDomain(fdTeamDomain, fdhkTeamDomain, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qTeamID, qhkTeamID, _ := qs.GetOK("team_id")
-	if err := o.bindTeamID(qTeamID, qhkTeamID, route.Formats); err != nil {
+	fdTeamID, fdhkTeamID, _ := fds.GetOK("team_id")
+	if err := o.bindTeamID(fdTeamID, fdhkTeamID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qText, qhkText, _ := qs.GetOK("text")
-	if err := o.bindText(qText, qhkText, route.Formats); err != nil {
+	fdText, fdhkText, _ := fds.GetOK("text")
+	if err := o.bindText(fdText, fdhkText, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qToken, qhkToken, _ := qs.GetOK("token")
-	if err := o.bindToken(qToken, qhkToken, route.Formats); err != nil {
+	fdToken, fdhkToken, _ := fds.GetOK("token")
+	if err := o.bindToken(fdToken, fdhkToken, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qUserID, qhkUserID, _ := qs.GetOK("user_id")
-	if err := o.bindUserID(qUserID, qhkUserID, route.Formats); err != nil {
+	fdUserID, fdhkUserID, _ := fds.GetOK("user_id")
+	if err := o.bindUserID(fdUserID, fdhkUserID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
-	qUserName, qhkUserName, _ := qs.GetOK("user_name")
-	if err := o.bindUserName(qUserName, qhkUserName, route.Formats); err != nil {
+	fdUserName, fdhkUserName, _ := fds.GetOK("user_name")
+	if err := o.bindUserName(fdUserName, fdhkUserName, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -134,13 +137,13 @@ func (o *CowsayParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 
 func (o *CowsayParams) bindChannelID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("channel_id", "query")
+		return errors.Required("channel_id", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("channel_id", "query", raw); err != nil {
+	if err := validate.RequiredString("channel_id", "formData", raw); err != nil {
 		return err
 	}
 
@@ -151,13 +154,13 @@ func (o *CowsayParams) bindChannelID(rawData []string, hasKey bool, formats strf
 
 func (o *CowsayParams) bindChannelName(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("channel_name", "query")
+		return errors.Required("channel_name", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("channel_name", "query", raw); err != nil {
+	if err := validate.RequiredString("channel_name", "formData", raw); err != nil {
 		return err
 	}
 
@@ -168,13 +171,13 @@ func (o *CowsayParams) bindChannelName(rawData []string, hasKey bool, formats st
 
 func (o *CowsayParams) bindCommand(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("command", "query")
+		return errors.Required("command", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("command", "query", raw); err != nil {
+	if err := validate.RequiredString("command", "formData", raw); err != nil {
 		return err
 	}
 
@@ -185,13 +188,13 @@ func (o *CowsayParams) bindCommand(rawData []string, hasKey bool, formats strfmt
 
 func (o *CowsayParams) bindResponseURL(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("response_url", "query")
+		return errors.Required("response_url", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("response_url", "query", raw); err != nil {
+	if err := validate.RequiredString("response_url", "formData", raw); err != nil {
 		return err
 	}
 
@@ -202,13 +205,13 @@ func (o *CowsayParams) bindResponseURL(rawData []string, hasKey bool, formats st
 
 func (o *CowsayParams) bindTeamDomain(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("team_domain", "query")
+		return errors.Required("team_domain", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("team_domain", "query", raw); err != nil {
+	if err := validate.RequiredString("team_domain", "formData", raw); err != nil {
 		return err
 	}
 
@@ -219,13 +222,13 @@ func (o *CowsayParams) bindTeamDomain(rawData []string, hasKey bool, formats str
 
 func (o *CowsayParams) bindTeamID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("team_id", "query")
+		return errors.Required("team_id", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("team_id", "query", raw); err != nil {
+	if err := validate.RequiredString("team_id", "formData", raw); err != nil {
 		return err
 	}
 
@@ -236,13 +239,13 @@ func (o *CowsayParams) bindTeamID(rawData []string, hasKey bool, formats strfmt.
 
 func (o *CowsayParams) bindText(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("text", "query")
+		return errors.Required("text", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("text", "query", raw); err != nil {
+	if err := validate.RequiredString("text", "formData", raw); err != nil {
 		return err
 	}
 
@@ -253,13 +256,13 @@ func (o *CowsayParams) bindText(rawData []string, hasKey bool, formats strfmt.Re
 
 func (o *CowsayParams) bindToken(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("token", "query")
+		return errors.Required("token", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("token", "query", raw); err != nil {
+	if err := validate.RequiredString("token", "formData", raw); err != nil {
 		return err
 	}
 
@@ -270,13 +273,13 @@ func (o *CowsayParams) bindToken(rawData []string, hasKey bool, formats strfmt.R
 
 func (o *CowsayParams) bindUserID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("user_id", "query")
+		return errors.Required("user_id", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("user_id", "query", raw); err != nil {
+	if err := validate.RequiredString("user_id", "formData", raw); err != nil {
 		return err
 	}
 
@@ -287,13 +290,13 @@ func (o *CowsayParams) bindUserID(rawData []string, hasKey bool, formats strfmt.
 
 func (o *CowsayParams) bindUserName(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
-		return errors.Required("user_name", "query")
+		return errors.Required("user_name", "formData")
 	}
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
-	if err := validate.RequiredString("user_name", "query", raw); err != nil {
+	if err := validate.RequiredString("user_name", "formData", raw); err != nil {
 		return err
 	}
 

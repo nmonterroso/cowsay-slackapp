@@ -27,13 +27,11 @@ func NewCowsay(ctx *middleware.Context, handler CowsayHandler) *Cowsay {
 	return &Cowsay{Context: ctx, Handler: handler}
 }
 
-/*Cowsay swagger:route GET / cowsay
+/*Cowsay swagger:route POST / cowsay
 
 Respond to a Slack cowsay command
 
-Respond to a Slack `/` command and send the requested message to the channel in which
-the command was posted
-
+Respond to a Slack cowsay (`/cowsay`) command and send the requested message to the channel in which the command was posted
 
 */
 type Cowsay struct {
