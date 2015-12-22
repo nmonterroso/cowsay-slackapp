@@ -33,7 +33,7 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 		code := http.StatusInternalServerError
 
 		if err == cowsay.CowNotFound {
-			message = fmt.Sprintf("%s not found", cow.Options.Cow)
+			message = fmt.Sprintf("%s not found", cow.Options.Animal)
 			code = http.StatusNotFound
 		}
 
