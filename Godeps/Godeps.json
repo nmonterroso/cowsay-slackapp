@@ -1,0 +1,110 @@
+{
+	"ImportPath": "github.com/nmonterroso/cowsay-slackapp",
+	"GoVersion": "go1.5",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/PuerkitoBio/purell",
+			"Comment": "v0.1.0-23-gd69616f",
+			"Rev": "d69616f51cdfcd7514d6a380847a152dfc2a749d"
+		},
+		{
+			"ImportPath": "github.com/asaskevich/govalidator",
+			"Comment": "v2-45-g1295808",
+			"Rev": "129580890d97de923d9d9aec06cb1aa771812aff"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/errors",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/httpkit",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/internal/validate",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/jsonpointer",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/jsonreference",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/spec",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/strfmt",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/go-swagger/go-swagger/swag",
+			"Comment": "v0.2.0-64-g601ac2c",
+			"Rev": "601ac2c355d38e5b51bb98f2b69f33217123b95e"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "1c83b3eabd45b6d76072b66b746c20815fb2872d"
+		},
+		{
+			"ImportPath": "github.com/jessevdk/go-flags",
+			"Comment": "v1-328-gd91b7c5",
+			"Rev": "d91b7c5a5ce0b1d99d765ec3fb20ab590e52ddcb"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/go-wordwrap",
+			"Rev": "ad45545899c7b13c020ea92b2072220eefad42b8"
+		},
+		{
+			"ImportPath": "github.com/moul/http2curl",
+			"Rev": "b0342e01ef01008cc313e64847a3b80b96e1f9bf"
+		},
+		{
+			"ImportPath": "github.com/naoina/denco",
+			"Rev": "9af2ba0e24214bac003821f4a501b131b2e04c75"
+		},
+		{
+			"ImportPath": "github.com/nmonterroso/cowsay",
+			"Rev": "537e979244db00aa0ba91a05c30a885819909d9d"
+		},
+		{
+			"ImportPath": "github.com/opennota/urlesc",
+			"Rev": "5fa9ff0392746aeae1c4b37fcc42c65afa7a9587"
+		},
+		{
+			"ImportPath": "github.com/parnurzeal/gorequest",
+			"Comment": "v0.2.13-9-gc73179d",
+			"Rev": "c73179dd31355d86bd7692de9b47623d6d0fa696"
+		},
+		{
+			"ImportPath": "github.com/tylerb/graceful",
+			"Comment": "v1.2.3",
+			"Rev": "48afeb21e2fcbcff0f30bd5ad6b97747b0fae38e"
+		},
+		{
+			"ImportPath": "golang.org/x/net/netutil",
+			"Rev": "f1d3149ecb40ffadf4a28d39a30f9a125fe57bdf"
+		},
+		{
+			"ImportPath": "golang.org/x/net/publicsuffix",
+			"Rev": "f1d3149ecb40ffadf4a28d39a30f9a125fe57bdf"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
+		}
+	]
+}
