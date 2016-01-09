@@ -78,7 +78,7 @@
 		},
 		{
 			"ImportPath": "github.com/nmonterroso/cowsay",
-			"Rev": "537e979244db00aa0ba91a05c30a885819909d9d"
+			"Rev": "44c02586db77e583e99c33bedddbc8c226fe0abe"
 		},
 		{
 			"ImportPath": "github.com/opennota/urlesc",
