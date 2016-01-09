@@ -7,6 +7,7 @@ import (
 	"github.com/go-swagger/go-swagger/httpkit"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/middleware"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/operations/defaultop"
 	"github.com/nmonterroso/cowsay-slackapp/restapi/responders"
 	"math/rand"
 	"time"
@@ -24,9 +25,9 @@ func configureAPI(api *operations.CowsaySlackappAPI) http.Handler {
 
 	api.JSONProducer = httpkit.JSONProducer()
 
-	api.CowsayHandler = operations.CowsayHandlerFunc(responders.CowsayResponder)
+	api.DefaultopCowsayHandler = defaultop.CowsayHandlerFunc(responders.CowsayResponder)
 
-	api.OauthRedirectHandler = operations.OauthRedirectHandlerFunc(responders.OauthRedirectResponder)
+	api.DefaultopOauthRedirectHandler = defaultop.OauthRedirectHandlerFunc(responders.OauthRedirectResponder)
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }

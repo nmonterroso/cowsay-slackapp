@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/go-swagger/go-swagger/httpkit/middleware"
 	"github.com/nmonterroso/cowsay-slackapp/models"
-	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/operations/defaultop"
 	"github.com/parnurzeal/gorequest"
 	"net/http"
 	"os"
@@ -31,13 +31,13 @@ type SlackAccessTokenResponse struct {
 	Scope       string `json:"scope"`
 }
 
-func OauthRedirectResponder(params operations.OauthRedirectParams) middleware.Responder {
+func OauthRedirectResponder(params defaultop.OauthRedirectParams) middleware.Responder {
 	if params.Error != nil {
-		return &operations.OauthRedirectOK{
+		return &defaultop.OauthRedirectOK{
 			&models.OauthComplete{false},
 		}
 	} else if params.Code == nil {
-		return operations.NewOauthRedirectDefault(http.StatusInternalServerError).WithPayload(
+		return defaultop.NewOauthRedirectDefault(http.StatusInternalServerError).WithPayload(
 			&models.Error{
 				Message: missingCode.Error(),
 			})
@@ -46,13 +46,13 @@ func OauthRedirectResponder(params operations.OauthRedirectParams) middleware.Re
 	_, err := slackAccessToken(*params.Code)
 
 	if err != nil {
-		return operations.NewOauthRedirectDefault(http.StatusInternalServerError).WithPayload(
+		return defaultop.NewOauthRedirectDefault(http.StatusInternalServerError).WithPayload(
 			&models.Error{
 				Message: err.Error(),
 			})
 	}
 
-	return &operations.OauthRedirectOK{
+	return &defaultop.OauthRedirectOK{
 		&models.OauthComplete{true},
 	}
 }

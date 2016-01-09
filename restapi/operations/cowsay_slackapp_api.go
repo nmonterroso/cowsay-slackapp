@@ -12,6 +12,8 @@ import (
 	"github.com/go-swagger/go-swagger/httpkit/middleware"
 	"github.com/go-swagger/go-swagger/spec"
 	"github.com/go-swagger/go-swagger/strfmt"
+
+	"github.com/nmonterroso/cowsay-slackapp/restapi/operations/defaultop"
 )
 
 // NewCowsaySlackappAPI creates a new CowsaySlackapp instance
@@ -42,10 +44,10 @@ type CowsaySlackappAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer httpkit.Producer
 
-	// CowsayHandler sets the operation handler for the cowsay operation
-	CowsayHandler CowsayHandler
-	// OauthRedirectHandler sets the operation handler for the oauth redirect operation
-	OauthRedirectHandler OauthRedirectHandler
+	// DefaultopCowsayHandler sets the operation handler for the cowsay operation
+	DefaultopCowsayHandler defaultop.CowsayHandler
+	// DefaultopOauthRedirectHandler sets the operation handler for the oauth redirect operation
+	DefaultopOauthRedirectHandler defaultop.OauthRedirectHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -98,12 +100,12 @@ func (o *CowsaySlackappAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.CowsayHandler == nil {
-		unregistered = append(unregistered, "CowsayHandler")
+	if o.DefaultopCowsayHandler == nil {
+		unregistered = append(unregistered, "defaultop.CowsayHandler")
 	}
 
-	if o.OauthRedirectHandler == nil {
-		unregistered = append(unregistered, "OauthRedirectHandler")
+	if o.DefaultopOauthRedirectHandler == nil {
+		unregistered = append(unregistered, "defaultop.OauthRedirectHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -182,12 +184,12 @@ func (o *CowsaySlackappAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/"] = NewCowsay(o.context, o.CowsayHandler)
+	o.handlers["POST"]["/"] = defaultop.NewCowsay(o.context, o.DefaultopCowsayHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/oauth-redirect"] = NewOauthRedirect(o.context, o.OauthRedirectHandler)
+	o.handlers["GET"]["/oauth-redirect"] = defaultop.NewOauthRedirect(o.context, o.DefaultopOauthRedirectHandler)
 
 }
 

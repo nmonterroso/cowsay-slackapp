@@ -5,12 +5,12 @@ import (
 	"github.com/go-swagger/go-swagger/httpkit/middleware"
 	"github.com/nmonterroso/cowsay"
 	"github.com/nmonterroso/cowsay-slackapp/models"
-	"github.com/nmonterroso/cowsay-slackapp/restapi/operations"
+	"github.com/nmonterroso/cowsay-slackapp/restapi/operations/defaultop"
 	"github.com/nmonterroso/cowsay-slackapp/slack"
 	"net/http"
 )
 
-func CowsayResponder(params operations.CowsayParams) middleware.Responder {
+func CowsayResponder(params defaultop.CowsayParams) middleware.Responder {
 	cow, err := cowsay.ParseArgs(params.Text)
 
 	if cow.IsHelper {
@@ -18,7 +18,7 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 	}
 
 	if err != nil {
-		return operations.NewCowsayDefault(http.StatusInternalServerError).WithPayload(
+		return defaultop.NewCowsayDefault(http.StatusInternalServerError).WithPayload(
 			&models.Error{
 				Message: err.Error(),
 			})
@@ -35,7 +35,7 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 			code = http.StatusNotFound
 		}
 
-		return operations.NewCowsayDefault(code).WithPayload(
+		return defaultop.NewCowsayDefault(code).WithPayload(
 			&models.Error{
 				Message: message,
 			})
@@ -46,7 +46,7 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 		responseType = slack.ResponseTypeEphemeral
 	}
 
-	return operations.NewCowsayOK().WithPayload(
+	return defaultop.NewCowsayOK().WithPayload(
 		&models.SLACKResponse{
 			Text:         slack.Pre(message),
 			ResponseType: responseType,

@@ -9,6 +9,11 @@
   "schemes": [
     "http"
   ],
+  "tags": [
+    {
+      "name": "defaultop"
+    }
+  ],
   "basePath": "/",
   "produces": [
     "application/json"
@@ -19,6 +24,7 @@
         "operationId": "cowsay",
         "summary": "Respond to a Slack cowsay command",
         "description": "Respond to a Slack cowsay (`/cowsay`) command and send the requested message to the channel in which the command was posted",
+        "tags": ["defaultop"],
         "produces": [
           "application/json"
         ],
@@ -117,6 +123,7 @@
       "get": {
         "operationId": "oauthRedirect",
         "description": "Respond to an oauth request acceptance/denial of app permissions",
+        "tags": ["defaultop"],
         "parameters": [
           {
             "name": "code",
