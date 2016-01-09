@@ -11,7 +11,7 @@ import (
 	"github.com/go-swagger/go-swagger/strfmt"
 )
 
-/*SLACKResponse slack response
+/*SlackResponse SLACKResponse slack response
 
 swagger:model SlackResponse
 */

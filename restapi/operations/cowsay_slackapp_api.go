@@ -18,10 +18,11 @@ import (
 func NewCowsaySlackappAPI(spec *spec.Document) *CowsaySlackappAPI {
 	o := &CowsaySlackappAPI{
 		spec:            spec,
-		handlers:        make(map[string]http.Handler),
+		handlers:        make(map[string]map[string]http.Handler),
 		formats:         strfmt.Default,
 		defaultConsumes: "application/x-www-form-urlencoded",
 		defaultProduces: "application/json",
+		ServerShutdown:  func() {},
 	}
 
 	return o
@@ -31,7 +32,7 @@ func NewCowsaySlackappAPI(spec *spec.Document) *CowsaySlackappAPI {
 type CowsaySlackappAPI struct {
 	spec            *spec.Document
 	context         *middleware.Context
-	handlers        map[string]http.Handler
+	handlers        map[string]map[string]http.Handler
 	formats         strfmt.Registry
 	defaultConsumes string
 	defaultProduces string
@@ -49,6 +50,10 @@ type CowsaySlackappAPI struct {
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
 	ServeError func(http.ResponseWriter, *http.Request, error)
+
+	// ServerShutdown is called when the HTTP(S) server is shut down and done
+	// handling all active connections and does not accept connections any more
+	ServerShutdown func()
 }
 
 // SetDefaultProduces sets the default produces media type
@@ -152,12 +157,16 @@ func (o *CowsaySlackappAPI) ProducersFor(mediaTypes []string) map[string]httpkit
 
 }
 
-// HandlerFor gets a http.Handler for the provided operation id
-func (o *CowsaySlackappAPI) HandlerFor(operationID string) (http.Handler, bool) {
+// HandlerFor gets a http.Handler for the provided operation method and path
+func (o *CowsaySlackappAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
-	h, ok := o.handlers[operationID]
+	um := strings.ToUpper(method)
+	if _, ok := o.handlers[um]; !ok {
+		return nil, false
+	}
+	h, ok := o.handlers[um][path]
 	return h, ok
 }
 
@@ -166,11 +175,19 @@ func (o *CowsaySlackappAPI) initHandlerCache() {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
 
-	o.handlers = make(map[string]http.Handler)
+	if o.handlers == nil {
+		o.handlers = make(map[string]map[string]http.Handler)
+	}
 
-	o.handlers["cowsay"] = NewCowsay(o.context, o.CowsayHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers[strings.ToUpper("POST")] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/"] = NewCowsay(o.context, o.CowsayHandler)
 
-	o.handlers["oauthRedirect"] = NewOauthRedirect(o.context, o.OauthRedirectHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers[strings.ToUpper("GET")] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/oauth-redirect"] = NewOauthRedirect(o.context, o.OauthRedirectHandler)
 
 }
 

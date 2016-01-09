@@ -12,6 +12,12 @@ import (
 	"github.com/go-swagger/go-swagger/strfmt"
 )
 
+// NewOauthRedirectParams creates a new OauthRedirectParams object
+// with the default values initialized.
+func NewOauthRedirectParams() OauthRedirectParams {
+	return OauthRedirectParams{}
+}
+
 // OauthRedirectParams contains all the bound params for the oauth redirect operation
 // typically these are obtained from a http.Request
 //
@@ -20,11 +26,11 @@ type OauthRedirectParams struct {
 	/*temporary code that can be exchanged for an access_token if the user accepted the oauth request
 	  In: query
 	*/
-	Code string
+	Code *string
 	/*error indicating that the user denied the access_token request
 	  In: query
 	*/
-	Error string
+	Error *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -58,7 +64,7 @@ func (o *OauthRedirectParams) bindCode(rawData []string, hasKey bool, formats st
 		return nil
 	}
 
-	o.Code = raw
+	o.Code = &raw
 
 	return nil
 }
@@ -72,7 +78,7 @@ func (o *OauthRedirectParams) bindError(rawData []string, hasKey bool, formats s
 		return nil
 	}
 
-	o.Error = raw
+	o.Error = &raw
 
 	return nil
 }

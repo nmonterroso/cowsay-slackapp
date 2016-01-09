@@ -9,7 +9,7 @@ import (
 	"github.com/go-swagger/go-swagger/strfmt"
 )
 
-/*OauthComplete oauth complete
+/*OauthComplete OauthComplete oauth complete
 
 swagger:model OauthComplete
 */

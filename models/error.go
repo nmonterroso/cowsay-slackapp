@@ -9,17 +9,11 @@ import (
 	"github.com/go-swagger/go-swagger/strfmt"
 )
 
-/*Error error
+/*Error Error error
 
 swagger:model Error
 */
 type Error struct {
-
-	/* the HTTP status of the response
-
-	Required: true
-	*/
-	Code int32 `json:"code,omitempty"`
 
 	/* details about why the request failed
 
@@ -32,11 +26,6 @@ type Error struct {
 func (m *Error) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateCode(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateMessage(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -45,15 +34,6 @@ func (m *Error) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Error) validateCode(formats strfmt.Registry) error {
-
-	if err := validate.Required("code", "body", int32(m.Code)); err != nil {
-		return err
-	}
-
 	return nil
 }
 

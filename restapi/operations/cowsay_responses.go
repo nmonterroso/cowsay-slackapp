@@ -21,9 +21,15 @@ type CowsayOK struct {
 	Payload *models.SLACKResponse `json:"body,omitempty"`
 }
 
-// Create CowsayOK with default headers values
-func NewCowsayOK() CowsayOK {
-	return CowsayOK{}
+// NewCowsayOK creates CowsayOK with default headers values
+func NewCowsayOK() *CowsayOK {
+	return &CowsayOK{}
+}
+
+// WithPayload adds the payload to the cowsay o k response
+func (o *CowsayOK) WithPayload(payload *models.SLACKResponse) *CowsayOK {
+	o.Payload = payload
+	return o
 }
 
 // WriteResponse to the client
@@ -42,20 +48,39 @@ func (o *CowsayOK) WriteResponse(rw http.ResponseWriter, producer httpkit.Produc
 swagger:response cowsayDefault
 */
 type CowsayDefault struct {
+	_statusCode int
 
 	// In: body
 	Payload *models.Error `json:"body,omitempty"`
 }
 
-// Create CowsayDefault with default headers values
-func NewCowsayDefault() CowsayDefault {
-	return CowsayDefault{}
+// NewCowsayDefault creates CowsayDefault with default headers values
+func NewCowsayDefault(code int) *CowsayDefault {
+	if code <= 0 {
+		code = 500
+	}
+
+	return &CowsayDefault{
+		_statusCode: code,
+	}
+}
+
+// WithStatusCode adds the status to the cowsay default response
+func (o *CowsayDefault) WithStatusCode(code int) *CowsayDefault {
+	o._statusCode = code
+	return o
+}
+
+// WithPayload adds the payload to the cowsay default response
+func (o *CowsayDefault) WithPayload(payload *models.Error) *CowsayDefault {
+	o.Payload = payload
+	return o
 }
 
 // WriteResponse to the client
 func (o *CowsayDefault) WriteResponse(rw http.ResponseWriter, producer httpkit.Producer) {
 
-	rw.WriteHeader(500)
+	rw.WriteHeader(o._statusCode)
 	if o.Payload != nil {
 		if err := producer.Produce(rw, o.Payload); err != nil {
 			panic(err) // let the recovery middleware deal with this

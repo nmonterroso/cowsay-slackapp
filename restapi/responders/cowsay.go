@@ -18,12 +18,10 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 	}
 
 	if err != nil {
-		return &operations.CowsayDefault{
+		return operations.NewCowsayDefault(http.StatusInternalServerError).WithPayload(
 			&models.Error{
-				Code:    http.StatusInternalServerError,
 				Message: err.Error(),
-			},
-		}
+			})
 	}
 
 	message, err := cow.Speak()
@@ -37,12 +35,10 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 			code = http.StatusNotFound
 		}
 
-		return &operations.CowsayDefault{
+		return operations.NewCowsayDefault(code).WithPayload(
 			&models.Error{
-				Code:    int32(code),
 				Message: message,
-			},
-		}
+			})
 	}
 
 	responseType := slack.ResponseTypeInChannel
@@ -50,10 +46,9 @@ func CowsayResponder(params operations.CowsayParams) middleware.Responder {
 		responseType = slack.ResponseTypeEphemeral
 	}
 
-	return &operations.CowsayOK{
-		Payload: &models.SLACKResponse{
+	return operations.NewCowsayOK().WithPayload(
+		&models.SLACKResponse{
 			Text:         slack.Pre(message),
 			ResponseType: responseType,
-		},
-	}
+		})
 }

@@ -13,6 +13,12 @@ import (
 	"github.com/go-swagger/go-swagger/strfmt"
 )
 
+// NewCowsayParams creates a new CowsayParams object
+// with the default values initialized.
+func NewCowsayParams() CowsayParams {
+	return CowsayParams{}
+}
+
 // CowsayParams contains all the bound params for the cowsay operation
 // typically these are obtained from a http.Request
 //

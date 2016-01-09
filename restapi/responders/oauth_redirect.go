@@ -32,28 +32,24 @@ type SlackAccessTokenResponse struct {
 }
 
 func OauthRedirectResponder(params operations.OauthRedirectParams) middleware.Responder {
-	if params.Error != "" {
+	if params.Error != nil {
 		return &operations.OauthRedirectOK{
 			&models.OauthComplete{false},
 		}
-	} else if params.Code == "" {
-		return &operations.OauthRedirectDefault{
+	} else if params.Code == nil {
+		return operations.NewOauthRedirectDefault(http.StatusInternalServerError).WithPayload(
 			&models.Error{
-				Code:    http.StatusInternalServerError,
 				Message: missingCode.Error(),
-			},
-		}
+			})
 	}
 
-	_, err := slackAccessToken(params.Code)
+	_, err := slackAccessToken(*params.Code)
 
 	if err != nil {
-		return &operations.OauthRedirectDefault{
+		return operations.NewOauthRedirectDefault(http.StatusInternalServerError).WithPayload(
 			&models.Error{
-				Code:    http.StatusInternalServerError,
 				Message: err.Error(),
-			},
-		}
+			})
 	}
 
 	return &operations.OauthRedirectOK{

@@ -184,15 +184,9 @@
     "Error": {
       "type": "object",
       "required": [
-        "code",
         "message"
       ],
       "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
-          "description": "the HTTP status of the response"
-        },
         "message": {
           "type": "string",
           "description": "details about why the request failed"
